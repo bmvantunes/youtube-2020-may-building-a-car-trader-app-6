@@ -10,7 +10,7 @@ import { getAsString } from '../getAsString';
 export interface SearchProps {
   makes: Make[];
   models: Model[];
-  singleColumn? :boolean;
+  singleColumn?: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({

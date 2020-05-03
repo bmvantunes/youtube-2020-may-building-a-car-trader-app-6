@@ -26,7 +26,7 @@ export default function CarsList({
   cars,
   totalPages,
 }: CarsListProps) {
-    const { query } = useRouter();
+  const { query } = useRouter();
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} sm={5} md={3} lg={2}>
@@ -34,19 +34,19 @@ export default function CarsList({
       </Grid>
       <Grid item xs={12} sm={7} md={9} lg={10}>
         <pre style={{ fontSize: '3rem' }}>
-        <Pagination
-              page={parseInt(getAsString(query.page) || '1')}
-              count={totalPages}
-              renderItem={(item) => (
-                <PaginationItem
-                  component={MaterialUiLink}
-                  query = {query}
-                  item={item}
-                  {...item}
-                />
-              )}
-            />
-          {JSON.stringify({ totalPages, cars  }, null, 4)}
+          <Pagination
+            page={parseInt(getAsString(query.page) || '1')}
+            count={totalPages}
+            renderItem={(item) => (
+              <PaginationItem
+                component={MaterialUiLink}
+                query={query}
+                item={item}
+                {...item}
+              />
+            )}
+          />
+          {JSON.stringify({ totalPages, cars }, null, 4)}
         </pre>
       </Grid>
     </Grid>
@@ -54,23 +54,38 @@ export default function CarsList({
 }
 
 export interface MaterialUiLinkProps {
-    item: PaginationRenderItemParams;
-    query: ParsedUrlQuery;
+  item: PaginationRenderItemParams;
+  query: ParsedUrlQuery;
 }
 
-export function MaterialUiLink({item, query, ...props}: MaterialUiLinkProps) {
-    return <Link href={{
+export function MaterialUiLink({ item, query, ...props }: MaterialUiLinkProps) {
+  return (
+    <Link
+      href={{
         pathname: '/cars',
-        query: {...query, page: item.page}
-    }}>
-    <a {...props}></a>
+        query: { ...query, page: item.page },
+      }}
+    >
+      <a {...props}></a>
     </Link>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const make = getAsString(ctx.query.make);
 
-  const [makes, models, pagination] = await Promise.all([getMakes(), getModels(make), getPaginatedCars(ctx.query)]);
+  const [makes, models, pagination] = await Promise.all([
+    getMakes(),
+    getModels(make),
+    getPaginatedCars(ctx.query),
+  ]);
 
-  return { props: { makes, models, cars: pagination.cars, totalPages: pagination.totalPages } };
+  return {
+    props: {
+      makes,
+      models,
+      cars: pagination.cars,
+      totalPages: pagination.totalPages,
+    },
+  };
 };

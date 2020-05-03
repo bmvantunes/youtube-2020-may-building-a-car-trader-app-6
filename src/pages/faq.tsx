@@ -18,14 +18,10 @@ export default function Faq({ faq }: FaqProps) {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>
-              {f.question}
-            </Typography>
+            <Typography>{f.question}</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>
-              {f.answer}
-            </Typography>
+            <Typography>{f.answer}</Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
       ))}
