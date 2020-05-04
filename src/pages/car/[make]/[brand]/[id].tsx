@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import React from 'react';
 import { CarModel } from '../../../../../api/Car';
 import { openDB } from '../../../../openDB';
@@ -30,6 +31,9 @@ export default function CarDetails({ car }: CarDetailsProps) {
 
   return (
     <div>
+      <Head>
+        <title>{car.make + ' ' + car.model}</title>
+      </Head>
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={5}>
