@@ -40,7 +40,7 @@ const MaterialUiLink = forwardRef<HTMLAnchorElement, MaterialUiLinkProps>(
       }}
       shallow
     >
-      <a {...props}></a>
+      <a {...props} ref={ref}></a>
     </Link>
   )
 );
