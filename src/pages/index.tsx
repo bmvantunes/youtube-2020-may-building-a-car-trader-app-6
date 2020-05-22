@@ -144,7 +144,7 @@ export interface ModelSelectProps extends SelectProps {
 export function ModelSelect({ models, make, ...props }: ModelSelectProps) {
   const { setFieldValue } = useFormikContext();
   const [field] = useField({
-    name: props.name,
+    name: props.name
   });
 
   const { data } = useSWR<Model[]>('/api/models?make=' + make, {
@@ -180,7 +180,9 @@ export function ModelSelect({ models, make, ...props }: ModelSelectProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<SearchProps> = async (
+  ctx
+) => {
   const make = getAsString(ctx.query.make);
 
   const [makes, models] = await Promise.all([getMakes(), getModels(make)]);

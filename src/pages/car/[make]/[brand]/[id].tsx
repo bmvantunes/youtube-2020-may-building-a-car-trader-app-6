@@ -69,7 +69,7 @@ export default function CarDetails({ car }: CarDetailsProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<CarDetailsProps> = async (ctx) => {
   const id = ctx.params.id;
   const db = await openDB();
   const car = await db.get<CarModel | undefined>(
