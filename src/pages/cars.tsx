@@ -2,7 +2,8 @@ import { Grid } from '@material-ui/core';
 import deepEqual from 'fast-deep-equal';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { ParsedUrlQuery, stringify } from 'querystring';
+import { stringify } from 'querystring';
+import { useState } from 'react';
 import useSWR from 'swr';
 import Search from '.';
 import { CarModel } from '../../api/Car';
@@ -18,7 +19,6 @@ export interface CarsListProps {
   models: Model[];
   cars: CarModel[];
   totalPages: number;
-  serverQuery: ParsedUrlQuery;
 }
 
 export default function CarsList({
@@ -26,9 +26,10 @@ export default function CarsList({
   models,
   cars,
   totalPages,
-  serverQuery,
 }: CarsListProps) {
   const { query } = useRouter();
+  const [serverQuery] = useState(query);
+
   const { data } = useSWR('/api/cars?' + stringify(query), {
     dedupingInterval: 15000,
     initialData: deepEqual(query, serverQuery)
@@ -58,7 +59,9 @@ export default function CarsList({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<CarsListProps> = async (
+  ctx
+) => {
   const make = getAsString(ctx.query.make);
 
   const [makes, models, pagination] = await Promise.all([
@@ -73,7 +76,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       models,
       cars: pagination.cars,
       totalPages: pagination.totalPages,
-      serverQuery: ctx.query,
     },
   };
 };
